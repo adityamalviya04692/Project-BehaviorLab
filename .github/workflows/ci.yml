@@ -1,0 +1,27 @@
+name: Validate application and Kafka pipeline
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python -m unittest -v test_pipeline.py
+      - name: Start real Kafka deployment
+        run: docker compose -f compose.yaml -f compose.kafka.yaml up --build -d --wait --wait-timeout 180
+      - name: Exercise broker and consumer end to end
+        run: python tests/kafka_smoke.py
+      - name: Container logs
+        if: always()
+        run: docker compose -f compose.yaml -f compose.kafka.yaml logs --tail=100
+      - name: Clean up test containers
+        if: always()
+        run: docker compose -f compose.yaml -f compose.kafka.yaml down -v

@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    image: behavior-lab:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8791:8791"
+    environment:
+      PIPELINE_MODE: local
+      BEHAVIOR_DB: /data/behavior.sqlite3
+      COOKIE_SECURE: ${COOKIE_SECURE:-0}
+    volumes:
+      - behavior-data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8791/api/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+volumes:
+  behavior-data:

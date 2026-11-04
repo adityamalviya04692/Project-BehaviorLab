@@ -1,0 +1,66 @@
+[
+  {
+    "id": "c1",
+    "topic": "Design",
+    "title": "Spaces that make room for thought",
+    "description": "Explore how light, texture and a little empty space change the way a room feels. Thoughtful spaces make everyday routines easier.",
+    "read": "4 min",
+    "art": "architecture"
+  },
+  {
+    "id": "c2",
+    "topic": "Travel",
+    "title": "The slower route to Kyoto",
+    "description": "A small guide to quiet streets, local trains and leaving space in your itinerary. Choose one neighborhood and spend a day exploring on foot.",
+    "read": "6 min",
+    "art": "mountain"
+  },
+  {
+    "id": "c3",
+    "topic": "Technology",
+    "title": "A closer look at everyday AI",
+    "description": "From recommendations to search, models shape small decisions. Understanding the signals behind a suggestion helps you judge its usefulness.",
+    "read": "5 min",
+    "art": "orbit"
+  },
+  {
+    "id": "c4",
+    "topic": "Food",
+    "title": "The ritual of a better morning",
+    "description": "Good coffee is a combination of water, beans and a repeatable routine. Start with fresh beans and change one variable at a time.",
+    "read": "3 min",
+    "art": "coffee"
+  },
+  {
+    "id": "c5",
+    "topic": "Design",
+    "title": "Less, but with more intention",
+    "description": "An introduction to useful objects and considered design. Look for materials that age well and details that solve a real problem.",
+    "read": "5 min",
+    "art": "orbit"
+  },
+  {
+    "id": "c6",
+    "topic": "Travel",
+    "title": "A weekend beyond the city",
+    "description": "Find a trail, pack light and make time to stop. A short local journey can offer a different perspective without a complicated itinerary.",
+    "read": "4 min",
+    "art": "mountain"
+  },
+  {
+    "id": "c7",
+    "topic": "Technology",
+    "title": "The invisible journey of a click",
+    "description": "A click becomes an event, an event becomes a feature, and a feature can influence a recommendation. Good systems keep that journey inspectable.",
+    "read": "7 min",
+    "art": "architecture"
+  },
+  {
+    "id": "c8",
+    "topic": "Food",
+    "title": "Cooking with the seasons",
+    "description": "Build a meal around what is fresh and available. A simple seasonal ingredient often needs less preparation than you expect.",
+    "read": "4 min",
+    "art": "coffee"
+  }
+]
