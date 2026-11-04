@@ -1,66 +1,163 @@
 [
   {
     "id": "c1",
-    "topic": "Design",
-    "title": "Spaces that make room for thought",
-    "description": "Explore how light, texture and a little empty space change the way a room feels. Thoughtful spaces make everyday routines easier.",
-    "read": "4 min",
-    "art": "architecture"
+    "topic": "Conferences",
+    "title": "North Summit 2026",
+    "description": "A day of ideas, leadership panels and useful conversations for Canadian business teams.",
+    "date": "2026-12-08",
+    "time": "09:00–17:00",
+    "timezone": "America/Toronto",
+    "city": "Toronto",
+    "venue": "Harbour Hall",
+    "capacity": 240,
+    "price_cents": 14900,
+    "art": "summit",
+    "tagline": "Better ideas. In good company.",
+    "agenda": [
+      "09:00 • Doors & breakfast",
+      "10:00 • The future of Canadian business",
+      "13:00 • Leadership roundtables",
+      "16:00 • Networking reception"
+    ]
   },
   {
     "id": "c2",
-    "topic": "Travel",
-    "title": "The slower route to Kyoto",
-    "description": "A small guide to quiet streets, local trains and leaving space in your itinerary. Choose one neighborhood and spend a day exploring on foot.",
-    "read": "6 min",
-    "art": "mountain"
+    "topic": "Shows",
+    "title": "Winter Lights Gala",
+    "description": "An evening of live music, dinner and recognition for teams and their clients.",
+    "date": "2026-12-12",
+    "time": "18:00–22:00",
+    "timezone": "America/Toronto",
+    "city": "Toronto",
+    "venue": "The Glasshouse",
+    "capacity": 180,
+    "price_cents": 18900,
+    "art": "gala",
+    "tagline": "An evening worth sharing.",
+    "agenda": [
+      "18:00 • Welcome reception",
+      "19:00 • Dinner & recognition",
+      "20:30 • Live performance"
+    ]
   },
   {
     "id": "c3",
-    "topic": "Technology",
-    "title": "A closer look at everyday AI",
-    "description": "From recommendations to search, models shape small decisions. Understanding the signals behind a suggestion helps you judge its usefulness.",
-    "read": "5 min",
-    "art": "orbit"
+    "topic": "Networking",
+    "title": "Founders & Friends",
+    "description": "Meet founders, partners and corporate buyers in small, facilitated networking circles.",
+    "date": "2026-12-15",
+    "time": "17:30–20:30",
+    "timezone": "America/Vancouver",
+    "city": "Vancouver",
+    "venue": "Pacific Loft",
+    "capacity": 100,
+    "price_cents": 5900,
+    "art": "network",
+    "tagline": "Your next good conversation.",
+    "agenda": [
+      "17:30 • Introductions",
+      "18:00 • Partner matchmaking",
+      "19:30 • Open networking"
+    ]
   },
   {
     "id": "c4",
-    "topic": "Food",
-    "title": "The ritual of a better morning",
-    "description": "Good coffee is a combination of water, beans and a repeatable routine. Start with fresh beans and change one variable at a time.",
-    "read": "3 min",
-    "art": "coffee"
+    "topic": "Workshops",
+    "title": "The Leadership Studio",
+    "description": "A practical workshop for managers building better, more connected teams.",
+    "date": "2026-12-18",
+    "time": "10:00–15:00",
+    "timezone": "America/Toronto",
+    "city": "Montréal",
+    "venue": "Atelier Centre",
+    "capacity": 60,
+    "price_cents": 22900,
+    "art": "workshop",
+    "tagline": "Make room for better teams.",
+    "agenda": [
+      "10:00 • Team dynamics lab",
+      "12:00 • Working lunch",
+      "13:00 • Your leadership action plan"
+    ]
   },
   {
     "id": "c5",
-    "topic": "Design",
-    "title": "Less, but with more intention",
-    "description": "An introduction to useful objects and considered design. Look for materials that age well and details that solve a real problem.",
-    "read": "5 min",
-    "art": "orbit"
+    "topic": "Conferences",
+    "title": "Future of Work Forum",
+    "description": "Explore workplace design, team culture and tools for a more thoughtful workday.",
+    "date": "2027-01-14",
+    "time": "09:00–16:00",
+    "timezone": "America/Toronto",
+    "city": "Ottawa",
+    "venue": "Capital Exchange",
+    "capacity": 200,
+    "price_cents": 12900,
+    "art": "summit",
+    "tagline": "The next chapter of work.",
+    "agenda": [
+      "09:00 • Keynotes",
+      "11:00 • Product demos",
+      "14:00 • Team culture panels"
+    ]
   },
   {
     "id": "c6",
-    "topic": "Travel",
-    "title": "A weekend beyond the city",
-    "description": "Find a trail, pack light and make time to stop. A short local journey can offer a different perspective without a complicated itinerary.",
-    "read": "4 min",
-    "art": "mountain"
+    "topic": "Shows",
+    "title": "Client Appreciation Night",
+    "description": "A hosted night of music and hospitality for client-facing teams and their guests.",
+    "date": "2027-01-22",
+    "time": "18:00–21:30",
+    "timezone": "America/Vancouver",
+    "city": "Vancouver",
+    "venue": "Waterfront Studio",
+    "capacity": 150,
+    "price_cents": 11900,
+    "art": "gala",
+    "tagline": "Thank you, beautifully said.",
+    "agenda": [
+      "18:00 • Welcome drinks",
+      "19:00 • Show & dinner",
+      "21:00 • Closing reception"
+    ]
   },
   {
     "id": "c7",
-    "topic": "Technology",
-    "title": "The invisible journey of a click",
-    "description": "A click becomes an event, an event becomes a feature, and a feature can influence a recommendation. Good systems keep that journey inspectable.",
-    "read": "7 min",
-    "art": "architecture"
+    "topic": "Networking",
+    "title": "Partners at the Table",
+    "description": "Structured introductions for exhibitors, sponsors and corporate event planners.",
+    "date": "2027-02-04",
+    "time": "12:00–16:00",
+    "timezone": "America/Toronto",
+    "city": "Toronto",
+    "venue": "Harbour Hall",
+    "capacity": 90,
+    "price_cents": 7900,
+    "art": "network",
+    "tagline": "Partnership starts here.",
+    "agenda": [
+      "12:00 • Hosted lunch",
+      "13:00 • Buyer meetings",
+      "15:00 • Partner introductions"
+    ]
   },
   {
     "id": "c8",
-    "topic": "Food",
-    "title": "Cooking with the seasons",
-    "description": "Build a meal around what is fresh and available. A simple seasonal ingredient often needs less preparation than you expect.",
-    "read": "4 min",
-    "art": "coffee"
+    "topic": "Workshops",
+    "title": "Better Events Bootcamp",
+    "description": "A hands-on planning session covering audience experience, logistics and event measurement.",
+    "date": "2027-02-12",
+    "time": "10:00–16:00",
+    "timezone": "America/Toronto",
+    "city": "Montréal",
+    "venue": "Atelier Centre",
+    "capacity": 50,
+    "price_cents": 9900,
+    "art": "workshop",
+    "tagline": "From brief to brilliant.",
+    "agenda": [
+      "10:00 • Audience journey",
+      "12:00 • Planning lab",
+      "14:00 • Measurement clinic"
+    ]
   }
 ]

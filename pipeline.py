@@ -13,9 +13,10 @@ CONTENT = json.loads((ROOT / 'catalog.json').read_text())
 BY_ID = {c['id']: c for c in CONTENT}
 TOPICS = sorted({c['topic'] for c in CONTENT})
 ACTIONS = {'content_view', 'bookmark_add', 'bookmark_remove', 'like_add', 'like_remove', 'page_view', 'topic_filter'}
-PAGES = {'discover', 'explore', 'saved', 'profile', 'detail'}
-STREAMS = ['behavior.' + t.lower() for t in TOPICS] + ['behavior.navigation']
-DB = Path(os.environ.get('BEHAVIOR_DB', ROOT / 'data' / 'behavior.sqlite3'))
+PAGES = {'discover', 'explore', 'saved', 'profile', 'detail', 'shop', 'product', 'cart', 'checkout', 'tickets', 'ticket', 'meetings', 'organize', 'brief', 'dashboard', 'attendees', 'sales'}
+BUSINESS_ACTIONS = {'cart_add', 'cart_remove', 'checkout_started', 'ticket_purchase', 'product_purchase', 'meeting_booked', 'event_brief_created', 'proposal_requested', 'ticket_checkin'}
+STREAMS = ['behavior.' + t.lower() for t in TOPICS] + ['behavior.navigation', 'business.commerce', 'business.meetings', 'business.planning', 'business.attendance']
+DB = Path(os.environ.get('BEHAVIOR_DB', ROOT / 'data' / 'behavior-events.sqlite3'))
 
 
 def now():
@@ -47,7 +48,7 @@ def init_db():
           seq INTEGER PRIMARY KEY AUTOINCREMENT, event_id TEXT UNIQUE NOT NULL,
           workspace TEXT NOT NULL, user_id TEXT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
           event_type TEXT NOT NULL, content_id TEXT, category TEXT, page TEXT NOT NULL,
-          filter_value TEXT, source TEXT NOT NULL, received_at TEXT NOT NULL, schema_version INTEGER NOT NULL);
+          filter_value TEXT, source TEXT NOT NULL, received_at TEXT NOT NULL, schema_version INTEGER NOT NULL, properties TEXT NOT NULL DEFAULT '{}');
         CREATE INDEX IF NOT EXISTS events_workspace ON events(workspace, seq);
         CREATE INDEX IF NOT EXISTS events_user ON events(user_id, seq);
         CREATE TABLE IF NOT EXISTS outbox (
@@ -71,6 +72,10 @@ def init_db():
           id INTEGER PRIMARY KEY AUTOINCREMENT, topic TEXT, partition_id INTEGER,
           broker_offset INTEGER, error TEXT, created_at TEXT);
         ''')
+        if 'properties' not in [r[1] for r in db.execute('PRAGMA table_info(events)')]:
+            db.execute("ALTER TABLE events ADD COLUMN properties TEXT NOT NULL DEFAULT '{}'")
+        import business
+        business.init_schema(db)
 
 
 def user_for(db, workspace):
@@ -105,7 +110,7 @@ def validate(data):
     return eid, typ, cid, page, category_filter
 
 
-def insert_event(db, workspace, uid, source, values):
+def insert_event(db, workspace, uid, source, values, properties=None):
     eid, typ, cid, page, category_filter = values
     existing = db.execute('SELECT * FROM events WHERE event_id=?', (eid,)).fetchone()
     if existing:
@@ -116,7 +121,9 @@ def insert_event(db, workspace, uid, source, values):
     db.execute('''INSERT INTO events(event_id,workspace,user_id,event_type,content_id,category,page,
                   filter_value,source,received_at,schema_version) VALUES(?,?,?,?,?,?,?,?,?,?,1)''',
                (eid, workspace, uid, typ, cid, category, page, category_filter, source, now()))
-    stream = 'behavior.' + (category.lower() if category else 'navigation')
+    if properties:
+        db.execute('UPDATE events SET properties=? WHERE event_id=?', (json.dumps(properties), eid))
+    stream = ('business.commerce' if typ in {'cart_add','cart_remove','checkout_started','ticket_purchase','product_purchase'} else 'business.meetings' if typ=='meeting_booked' else 'business.planning' if typ in {'event_brief_created','proposal_requested'} else 'business.attendance' if typ=='ticket_checkin' else 'behavior.' + (category.lower() if category else 'navigation'))
     db.execute('INSERT INTO outbox(event_id,topic) VALUES(?,?)', (eid, stream))
     return eid
 
@@ -148,6 +155,7 @@ def fold(events):
                 elif typ == field + '_remove' and cid in target:
                     target.remove(cid)
                     delta = -weight
+            delta += {'ticket_purchase':8, 'product_purchase':6, 'meeting_booked':6, 'proposal_requested':10, 'event_brief_created':2}.get(typ, 0)
             scores[e['category']] += delta
         weights[e['event_id']] = delta
     return scores, saved, liked, viewed, weights
@@ -204,6 +212,8 @@ def seed(workspace, count=60):
             for c in cards + rng.sample(others, 1):
                 for action in ['content_view'] + (['bookmark_add'] if rng.random() < .55 else []) + (['like_add'] if rng.random() < .4 else []):
                     insert_event(db, workspace, uid, 'simulated', (str(uuid.uuid4()), action, c['id'], 'detail', None))
+            import business
+            business.seed_visitor(db, workspace, uid, i)
     return count
 
 
@@ -219,7 +229,7 @@ def snapshot(workspace):
     for name in ['saved', 'liked', 'viewed']:
         result[name] = json.loads(profile[name]) if profile else []
     result['events'] = [{**{k: e[k] for k in e.keys() if k != 'workspace'}, 'id': e['event_id'], 'type': e['event_type'], 'topic': e['category'],
-                         'timestamp': e['received_at'], 'weight': e['weight'] or 0} for e in rows]
+                         'timestamp': e['received_at'], 'weight': e['weight'] or 0, 'properties': json.loads(e['properties'])} for e in rows]
     result['pending'] = sum(e['weight'] is None for e in rows)
     ranked = sorted(CONTENT, key=lambda c: (scores[c['topic']], c['id'] not in result['viewed']), reverse=True)
     result['recommendations'] = [c['id'] for c in ranked if c['id'] not in result['saved']][:4]
@@ -257,13 +267,16 @@ def overview(workspace, source='all'):
         u.pop('workspace')
     for r in recent:
         r.pop('workspace')
+        r['properties'] = json.loads(r['properties'])
     segments = []
     for topic in TOPICS:
         interested = [u for u in users if u['scores'][topic] > 0]
         intent = [u for u in users if any(BY_ID[c]['topic'] == topic for c in u['saved'])]
         segments.append({'topic': topic, 'interested': len(interested), 'high_intent': len(intent),
                          'points': sum(u['scores'][topic] for u in users)})
-    return {'totals': {k: v or 0 for k, v in totals.items()}, 'streams': streams, 'recent': recent,
+    import business
+    commercial = business.report(workspace, source)
+    return {'business': commercial, 'totals': {k: v or 0 for k, v in totals.items()}, 'streams': streams, 'recent': recent,
             'users': users, 'segments': segments, 'workers': statuses,
             'gold_count': sum(bool(u['updated_at']) for u in users),
             'bookmark_visitors': sum(bool(u['saved']) for u in users),

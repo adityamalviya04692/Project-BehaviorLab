@@ -15,7 +15,7 @@ A random 256-bit HttpOnly, SameSite=Strict cookie scopes an anonymous workspace.
 }
 ```
 
-For `topic_filter`, omit content_id or send null and supply `filter_value` from the catalog topics or `All`. Navigation actions do not accept content IDs. Server validation enforces UUIDs, actions, pages and content membership. Unknown categories cannot enter scores. Body size is bounded. Cross-origin writes and non-JSON writes are rejected. A workspace is capped at 8,000 real-capture event rows; the synthetic loader can add one bounded 345-event cohort. These limits do not replace perimeter rate limiting for a public service.
+For `topic_filter`, omit content_id or send null and supply `filter_value` from the catalog topics or `All`. Navigation actions do not accept content IDs. Server validation enforces UUIDs, actions, pages and content membership. Unknown categories cannot enter scores. Body size is bounded. Cross-origin writes and non-JSON writes are rejected. A workspace is capped at 8,000 real-capture event rows; the synthetic loader can add one bounded 60-visitor cohort. These limits do not replace perimeter rate limiting for a public service.
 
 ## Tables
 
@@ -40,11 +40,12 @@ The publisher reads pending rows in sequence, sends full event metadata excludin
 
 ## Topic semantics
 
-- `behavior.design`
-- `behavior.food`
-- `behavior.technology`
-- `behavior.travel`
+- `behavior.conferences`
+- `behavior.shows`
+- `behavior.networking`
+- `behavior.workshops`
 - `behavior.navigation`
+- `business.commerce`, `business.meetings`, `business.planning`, `business.attendance`
 
 Routing uses trusted catalog metadata, not inferred preference. All stories in a category share a topic. User IDs are keys, giving stable per-user partition routing *within a topic*. Category filters are navigation events, not evidence of a content preference. A preference is computed in the materializer.
 

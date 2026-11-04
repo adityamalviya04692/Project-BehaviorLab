@@ -11,7 +11,7 @@ services:
     command: ["python", "worker.py"]
     restart: unless-stopped
     environment:
-      BEHAVIOR_DB: /data/behavior.sqlite3
+      BEHAVIOR_DB: /data/behavior-events.sqlite3
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     volumes:
       - behavior-data:/data

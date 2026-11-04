@@ -22,7 +22,7 @@ deadline = time.monotonic() + 90
 while time.monotonic() < deadline:
     state = call('/api/state')
     report = call('/api/overview')
-    if state['scores']['Travel'] == 4 and report['totals']['published'] == 1:
+    if state['scores']['Shows'] == 4 and report['totals']['published'] == 1:
         break
     time.sleep(1)
 else:

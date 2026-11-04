@@ -93,7 +93,7 @@ def consume_message(consumer, message):
 
 
 def consume():
-    consumer = Consumer({**config(), 'group.id': os.environ.get('KAFKA_GROUP_ID', 'behavior-lab-materializer-v1'),
+    consumer = Consumer({**config(), 'group.id': os.environ.get('KAFKA_GROUP_ID', 'behavior-lab-events-v1'),
                          'auto.offset.reset': 'earliest', 'enable.auto.commit': False})
     consumer.subscribe(p.STREAMS)
     try:

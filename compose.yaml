@@ -7,7 +7,7 @@ services:
       - "127.0.0.1:8791:8791"
     environment:
       PIPELINE_MODE: local
-      BEHAVIOR_DB: /data/behavior.sqlite3
+      BEHAVIOR_DB: /data/behavior-events.sqlite3
       COOKIE_SECURE: ${COOKIE_SECURE:-0}
     volumes:
       - behavior-data:/data

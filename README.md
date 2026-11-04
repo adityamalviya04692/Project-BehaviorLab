@@ -2,7 +2,7 @@
 
 An interactive behavioral data application. Watch an animated crowd move through a mobile app, try it yourself, inspect every pipeline layer, and explore audience interests and hypothetical sales opportunities.
 
-![Behavior Lab landing](docs/landing-preview.png)
+
 
 ## Four connected pages
 
@@ -13,7 +13,7 @@ An interactive behavioral data application. Watch an animated crowd move through
 | `/architecture` | Inspect database records and schema, category topic routing, Kafka delivery receipts, bronze/silver/gold tables and scoring rules. |
 | `/insights` | Topic cohorts, visitor evidence profiles, real/synthetic filters and an adjustable revenue scenario. |
 
-The temporary phone app is **Elsewhere**, a content discovery app. Its stories are in `catalog.json`; replace the catalog and phone screens when the final app domain is chosen.
+The phone app represents **Northline Events**, a fictional Toronto-based corporate events company. Its Canadian event catalog is in `catalog.json`. Tickets, merchandise orders, meeting bookings, briefs, proposal requests, and entry are simulated within each workspace.
 
 ## Run locally
 
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 python server.py
 ```
 
-Open **http://127.0.0.1:8791**. Local mode runs the real event database and the same profile materializer without a broker. The UI labels this as **Local processor**. SQLite data persists in `data/behavior.sqlite3`.
+Open **http://127.0.0.1:8791**. Local mode runs the real event database and the same profile materializer without a broker. The UI labels this as **Local processor**. SQLite data persists in `data/behavior-events.sqlite3`.
 
 For the production HTTP server locally:
 
@@ -44,7 +44,7 @@ Install Docker with Compose, then:
 docker compose -f compose.yaml -f compose.kafka.yaml up --build -d --wait
 ```
 
-This starts the Flask/Gunicorn web service, an Apache Kafka broker and a publisher/consumer worker. Kafka has five category/navigation topics, three partitions per topic, and user IDs as partition keys. Kafka is internal to the Compose network. SQLite and broker logs use persistent volumes.
+This starts the Flask/Gunicorn web service, an Apache Kafka broker and a publisher/consumer worker. Kafka has nine behavior and business topics, three partitions per topic, and user IDs as partition keys. Kafka is internal to the Compose network. SQLite and broker logs use persistent volumes.
 
 To use Docker without Kafka:
 
@@ -57,10 +57,10 @@ Do not switch a populated deployment between modes while traffic is active: alre
 ## A two-minute walkthrough
 
 1. Open the landing page and watch the cursor swarm. Its numbers are **illustrative**, not live user metrics.
-2. Select **Run a 60-visitor sample**. This writes 345 synthetic events across 60 anonymous profiles into your workspace. Repeated clicks do not duplicate the sample.
+2. Select **Run a 60-visitor sample**. This writes synthetic behavior and business records across 60 anonymous profiles into your workspace. Repeated clicks do not duplicate the sample.
 3. Open **Architecture**. Watch captured events become bronze records, silver records and gold profiles. Inspect a row to see its ID, visitor, category, action, source and delivery metadata.
 4. Explore **Route through Kafka**. In local mode, publication is correctly zero. With Compose Kafka, actual partitions and offsets appear after broker acknowledgment.
-5. In **Playground**, open a story and save it. The profile gains one point for the first view and four for the active bookmark.
+5. In **Playground**, open an event and save it. The profile gains one point for the first view and four for the active bookmark.
 6. In **Insights**, select **My clicks** to isolate your actions from the synthetic audience. Inspect a visitor’s evidence, then adjust the conversion and order-value assumptions.
 
 **Reset workspace** in the playground clears your real actions and synthetic sample. It does not affect other visitors’ workspaces. Existing browser cookies identify anonymous workspaces; there is no login or collection of names, emails or location.
@@ -110,11 +110,17 @@ Read [VALIDATION.md](VALIDATION.md) for what was actually exercised and what rem
 - The animated “million journeys” is a visual explanation. No million-user capacity or benchmark is claimed.
 - Synthetic and real activity are labeled and independently filterable. Public visitors never receive another workspace’s rows.
 - Topic scores are explainable heuristics. They are not trained AI, personality traits, confidence probabilities or purchase predictions.
-- The sales calculation is `visitors with an active bookmark × assumed conversion × assumed order value`. There is no transaction tracking in the demo.
+- The what-if sales calculation uses eligible visitors, an assumed conversion rate and a CAD order value. Demo orders, quantities and totals are reported separately.
 - SQLite, one materializer, a single broker and replication factor one are demonstration choices. Production scale needs a distributed data store, replicated Kafka, partition-aware workers, observability, retention and abuse controls.
 - At-least-once transport plus idempotent writes is not an exactly-once guarantee across Kafka and SQLite.
-- The original v1 `events.sqlite3`, if present, is preserved. The new schema uses `data/behavior.sqlite3`; v1 data is not silently migrated.
+- The original v1 `events.sqlite3`, if present, is preserved. The new schema uses `data/behavior-events.sqlite3`; v1 data is not silently migrated.
 
 ## Visual credits
 
 The swarm concept was inspired by [DhvanilPatel/swarm-cursors](https://github.com/DhvanilPatel/swarm-cursors), which credits Joel Califa’s Swarm. This project uses an original, bounded Web Animations implementation; no extension code or animation assets were copied. The user’s normal pointer is unchanged.
+
+## Northline demo walkthrough
+
+Open North Summit, choose Get tickets, and place a demo order. Open Tickets to see a code for each pass and simulate entry. Use Shop to order merchandise and Workspace to book a consultation or save a brief with custom requirements. A saved brief can generate a demo proposal request. The Organizer dashboard shows event-specific tickets issued, check-ins, merchandise and ticket sales. Insights ranks clients by explicit follow-up signals and demo spend.
+
+The event edition uses a separate database so records from the earlier story demo remain on disk. Prices are in CAD. Demo checkout creates local records and does not collect card details. Meeting and proposal actions create workspace records only.

@@ -7,6 +7,7 @@ from urllib.parse import urlsplit
 from flask import Flask, g, jsonify, request, send_from_directory
 from werkzeug.exceptions import HTTPException
 import pipeline as p
+import business
 
 MODE = os.environ.get('PIPELINE_MODE', 'local')
 if MODE not in {'local', 'kafka'}:
@@ -97,6 +98,20 @@ def create_app():
         if MODE == 'local':
             p.process_event(eid)
         return jsonify(p.snapshot(g.workspace))
+
+    @app.get('/api/business')
+    def business_state():
+        return jsonify(business.report(g.workspace))
+
+    @app.post('/api/business')
+    def business_action():
+        try:
+            eid = business.execute(g.workspace, request.get_json())
+        except (ValueError, KeyError, TypeError, AttributeError) as error:
+            return jsonify(error=str(error)), 400
+        if MODE == 'local':
+            p.process_event(eid)
+        return jsonify(id=eid, business=business.report(g.workspace), state=p.snapshot(g.workspace))
 
     @app.post('/api/simulate')
     def simulate():

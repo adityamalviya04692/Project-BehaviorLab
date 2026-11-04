@@ -9,3 +9,9 @@
 #architecture-content{min-width:0}.architecture-layout{grid-template-columns:230px minmax(0,1fr)}@media(max-width:1150px){.architecture-layout{grid-template-columns:195px minmax(0,1fr)}}@media(max-width:900px){.architecture-layout{grid-template-columns:minmax(0,1fr)}}
 
 @media(max-width:370px){.flow-strip>div{gap:5px;font-size:9px}.flow-strip b{font-size:7px}}
+
+.mini-scene-label{font:10px monospace;text-transform:uppercase;color:#50705e;margin:12px 0}
+.mini-event-art{display:flex;flex-direction:column;justify-content:space-between;gap:32px;min-height:140px;padding:13px;background:linear-gradient(135deg,#203f37,#5f8f76);border-radius:8px;color:#fff}.mini-event-art span{font-size:8px;letter-spacing:1px}.mini-event-art b{font-size:clamp(15px,2vw,27px);line-height:1.1}
+#mini-scene p{font-size:10px;line-height:1.5;min-height:32px}.mini-tap{border-radius:6px;background:#254e42;color:white;font-size:10px;padding:10px;line-height:1.3}
+#featured-cursor{position:absolute;top:0;left:0;opacity:0;color:#bd7537;font-size:23px;transform-origin:center}
+.business-insights{margin-bottom:22px}.business-insights p{font-size:13px;line-height:1.6}.business-insights table{min-width:540px}

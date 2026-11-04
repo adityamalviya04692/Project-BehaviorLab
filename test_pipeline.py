@@ -34,10 +34,10 @@ class PipelineTests(unittest.TestCase):
     def test_repeat_views_and_undo(self):
         for action in ['content_view', 'content_view', 'bookmark_add', 'bookmark_add', 'like_add']:
             self.event(action)
-        self.assertEqual(p.snapshot(self.workspace)['scores']['Design'], 7)
+        self.assertEqual(p.snapshot(self.workspace)['scores']['Conferences'], 7)
         for action in ['bookmark_remove', 'bookmark_remove', 'like_remove']:
             self.event(action)
-        self.assertEqual(p.snapshot(self.workspace)['scores']['Design'], 1)
+        self.assertEqual(p.snapshot(self.workspace)['scores']['Conferences'], 1)
 
     def test_idempotent_capture_and_processing(self):
         eid = self.event()
@@ -46,7 +46,7 @@ class PipelineTests(unittest.TestCase):
         report = p.overview(self.workspace)
         self.assertEqual(report['totals']['captured'], 1)
         self.assertEqual(report['totals']['silver'], 1)
-        self.assertEqual(report['users'][0]['scores']['Design'], 1)
+        self.assertEqual(report['users'][0]['scores']['Conferences'], 1)
 
     def test_conflicting_id_rejected(self):
         eid = self.event()
@@ -56,7 +56,7 @@ class PipelineTests(unittest.TestCase):
     def test_capture_and_outbox_are_atomic(self):
         eid = self.event(process=False)
         with p.connect() as db:
-            self.assertEqual(db.execute('SELECT topic FROM outbox WHERE event_id=?', (eid,)).fetchone()[0], 'behavior.design')
+            self.assertEqual(db.execute('SELECT topic FROM outbox WHERE event_id=?', (eid,)).fetchone()[0], 'behavior.conferences')
             self.assertEqual(db.execute('SELECT count(*) FROM silver').fetchone()[0], 0)
         self.assertEqual(p.snapshot(self.workspace)['pending'], 1)
 
@@ -66,7 +66,7 @@ class PipelineTests(unittest.TestCase):
         p.process_event(removed, 'kafka')
         p.process_event(added, 'kafka')
         state = p.snapshot(self.workspace)
-        self.assertEqual(state['scores']['Design'], 0)
+        self.assertEqual(state['scores']['Conferences'], 0)
         self.assertEqual(state['saved'], [])
         self.assertEqual([e['weight'] for e in state['events']], [4, -4])
 
@@ -115,11 +115,11 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(response.json['events'][0]['source'], 'real')
 
     def test_navigation_filter_capture_and_input_guards(self):
-        data = {'id': str(uuid.uuid4()), 'type': 'topic_filter', 'page': 'explore', 'filter_value': 'Travel'}
+        data = {'id': str(uuid.uuid4()), 'type': 'topic_filter', 'page': 'explore', 'filter_value': 'Shows'}
         r = self.client.post('/api/events', json=data)
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.json['total'], 0)
-        self.assertEqual(r.json['events'][0]['filter_value'], 'Travel')
+        self.assertEqual(r.json['events'][0]['filter_value'], 'Shows')
         self.assertEqual(self.client.post('/api/events', json=data, headers={'Origin':'https://malicious.test'}).status_code, 403)
         self.assertEqual(self.client.post('/api/events', data='hello').status_code, 415)
         self.assertEqual(self.client.post('/api/events', data='x'*9000, content_type='application/json').status_code, 413)
@@ -161,7 +161,7 @@ class PipelineTests(unittest.TestCase):
         message, consumer = Mock(), Mock()
         message.error.return_value = None
         message.value.return_value = json.dumps({'event_id': eid, 'schema_version': 1}).encode()
-        message.topic.return_value = 'behavior.design'
+        message.topic.return_value = 'behavior.conferences'
         message.key.return_value = user_id.encode()
         with patch('worker.p.process_event', side_effect=RuntimeError('database unavailable')):
             with self.assertRaises(RuntimeError):
@@ -169,7 +169,7 @@ class PipelineTests(unittest.TestCase):
         consumer.commit.assert_not_called()
         worker.consume_message(consumer, message)
         consumer.commit.assert_called_once_with(message=message, asynchronous=False)
-        self.assertEqual(p.snapshot(self.workspace)['scores']['Design'], 1)
+        self.assertEqual(p.snapshot(self.workspace)['scores']['Conferences'], 1)
 
     def test_publisher_failure_does_not_report_success(self):
         self.event(process=False)
@@ -187,7 +187,7 @@ class PipelineTests(unittest.TestCase):
         message, consumer = Mock(), Mock()
         message.error.return_value = None
         message.value.return_value = b'invalid'
-        message.topic.return_value = 'behavior.design'
+        message.topic.return_value = 'behavior.conferences'
         message.partition.return_value = 0
         message.offset.return_value = 10
         worker.consume_message(consumer, message)

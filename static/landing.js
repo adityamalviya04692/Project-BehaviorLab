@@ -35,18 +35,46 @@ function sync(){
  $('#pause-swarm').textContent=paused?'Play animation ▷':'Pause animation Ⅱ';
  $('#pause-swarm').setAttribute('aria-pressed',String(paused));
  clearInterval(timer);
- if(!stopped)timer=setInterval(updateSignals,1300);
+ if(!stopped)timer=setInterval(updateSignals,2900);
+}
+const scenes=[
+ ['Events','North Summit 2026','Toronto · Dec 8','View event','content_view','behavior.conferences'],
+ ['Event details','North Summit 2026','Harbour Hall · General admission','Get tickets · CAD 149','checkout_started','business.commerce'],
+ ['Checkout','Two summit passes','Demo total · CAD 298','Place demo order','ticket_purchase','business.commerce'],
+ ['Tickets','Your passes are ready','NL-SUMMIT-01 · General admission','Simulate entry','ticket_checkin','business.attendance'],
+ ['Event shop','Northline tote','Pickup at Harbour Hall · CAD 32','Buy tote','product_purchase','business.commerce'],
+ ['Meetings','Plan with Northline','Dec 1 · 10:00 ET','Book meeting','meeting_booked','business.meetings'],
+ ['Event brief','Partner summit','Toronto · 120 guests · Venue and AV','Save brief','event_brief_created','business.planning'],
+ ['Organizer','North Summit dashboard','Tickets issued · Entry · Shop sales','View sales','page_view','behavior.navigation'],
+];
+let sceneIndex=0, counts=[0,0,0];
+function showScene(){
+ const [label,title,detail,cta]=scenes[sceneIndex];
+ $('#mini-scene').innerHTML=`<div class="mini-scene-label">${label} · ${sceneIndex+1}/${scenes.length}</div><div class="mini-event-art"><span>NORTHLINE EVENTS</span><b>${title}</b></div><p>${detail}</p><div class="mini-tap">${cta}</div>`;
 }
 function updateSignals(){
- tick++;total+=3+tick%7;
- const topics=['design','travel','food','technology'],actions=['content_view','bookmark_add','like_add'];
- $('#hero-count').textContent=total.toLocaleString();$('#hero-event').textContent=actions[tick%3];
- $('#hero-topic').textContent='behavior.'+topics[tick%4];$('#hero-user').textContent=labels[tick%labels.length];
- ['design','travel','food'].forEach((t,i)=>$('#'+t+'-count').textContent=Math.floor(total*(.29-i*.04)));
+ const current=scenes[sceneIndex], target=$('.mini-tap').getBoundingClientRect(), bounds=stage.getBoundingClientRect();
+ const x=target.right-bounds.left-15,y=target.top-bounds.top+target.height/2;
+ const pointer=$('#featured-cursor');
+ if(!reduce.matches)pointer.animate([{transform:`translate(${x+35}px,${y-35}px)`,opacity:0},{transform:`translate(${x}px,${y}px)`,opacity:1},{transform:`translate(${x}px,${y}px) scale(.85)`,opacity:0}],{duration:420,easing:'cubic-bezier(.23,1,.32,1)'});
+ tick++;total++;
+ if(current[4]==='ticket_purchase')counts[0]+=2;
+ if(current[4]==='meeting_booked')counts[1]++;
+ if(current[4]==='product_purchase')counts[2]++;
+ $('#hero-count').textContent=total.toLocaleString();
+ $('#hero-event').textContent=current[4];$('#hero-topic').textContent=current[5];$('#hero-user').textContent=labels[tick%labels.length];
+ ['design','travel','food'].forEach((t,i)=>$('#'+t+'-count').textContent=counts[i]);
  const points=Array.from({length:9},(_,i)=>[i*30,85-i*7+Math.sin((tick+i)*.8)*9]);
  const line=points.map(([x,y],i)=>`${i?'L':'M'}${x} ${y}`).join(' ');
  $('#swarm-line').setAttribute('d',line);$('#swarm-area').setAttribute('d',line+' L240 105 L0 105 Z');
+ sceneIndex=(sceneIndex+1)%scenes.length;showScene();
 }
+const featured=document.createElement('div');
+featured.id='featured-cursor';featured.textContent='➤';layer.append(featured);
+showScene();
+const next=document.createElement('button');
+next.textContent='Next interaction →';next.className='mini-next';
+$('.stage-topline').append(next);next.onclick=updateSignals;
 $('#pause-swarm').onclick=()=>{paused=!paused;sync()};
 reduce.addEventListener('change',()=>{paused=reduce.matches;sync()});
 document.addEventListener('visibilitychange',sync);

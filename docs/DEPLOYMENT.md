@@ -78,11 +78,11 @@ It uses `GITHUB_TOKEN` with package write permission. No registry password belon
 | Variable | Default | Use |
 | --- | --- | --- |
 | PIPELINE_MODE | local | local or kafka; no silent fallback |
-| BEHAVIOR_DB | data/behavior.sqlite3 | Persistent SQLite path |
+| BEHAVIOR_DB | data/behavior-events.sqlite3 | Persistent SQLite path |
 | HOST / PORT | 127.0.0.1 / 8791 | Development server only; Gunicorn binding is in Docker CMD |
 | COOKIE_SECURE | 0 | Set 1 behind HTTPS |
 | KAFKA_BOOTSTRAP_SERVERS | localhost:9092 | Worker broker addresses; Compose uses kafka:9092 |
-| KAFKA_GROUP_ID | behavior-lab-materializer-v1 | Consumer group; use a distinct group per separate deployment |
+| KAFKA_GROUP_ID | behavior-lab-events-v1 | Consumer group; use a distinct group per separate deployment |
 | KAFKA_REPLICATION_FACTOR | 1 | Topic creation factor; increase only with enough brokers |
 | KAFKA_SECURITY_PROTOCOL | client default | SASL_SSL for an appropriately configured managed broker |
 | KAFKA_SASL_MECHANISM / USERNAME / PASSWORD | unset | Managed broker credentials supplied as secrets |
