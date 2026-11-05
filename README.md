@@ -124,3 +124,10 @@ The swarm concept was inspired by [DhvanilPatel/swarm-cursors](https://github.co
 Open North Summit, choose Get tickets, and place a demo order. Open Tickets to see a code for each pass and simulate entry. Use Shop to order merchandise and Workspace to book a consultation or save a brief with custom requirements. A saved brief can generate a demo proposal request. The Organizer dashboard shows event-specific tickets issued, check-ins, merchandise and ticket sales. Insights ranks clients by explicit follow-up signals and demo spend.
 
 The event edition uses a separate database so records from the earlier story demo remain on disk. Prices are in CAD. Demo checkout creates local records and does not collect card details. Meeting and proposal actions create workspace records only.
+
+
+## Case study and walkthrough
+
+The repository includes an eight-slide editable presentation, a narrated MP4 walkthrough, captions and a PDF case study under `launch/output`.
+
+The full Kafka CI workflow passed on 5 November 2026. See [the verified run](https://github.com/adityamalviya04692/Project-BehaviorLab/actions/runs/41978919827). Public backend hosting remains pending.

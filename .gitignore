@@ -8,3 +8,5 @@ data/
 artifacts/
 .DS_Store
 /preview.png
+launch/.build/
+launch/output/Behavior_Lab_Case_Study.pptx

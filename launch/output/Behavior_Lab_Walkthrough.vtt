@@ -1,0 +1,73 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.467
+Behavior Lab is my behavioral event pipeline project. A fictional Canadian corporate events
+
+00:00:06.467 --> 00:00:12.933
+company, Northline Events, provides the business context. The interactive application connects customer actions
+
+00:00:12.933 --> 00:00:19.400
+to inspectable data and client insights.
+
+00:00:19.400 --> 00:00:26.700
+Corporate event activity spans browsing, ticket purchases, meeting requests and attendance. I built
+
+00:00:26.700 --> 00:00:34.000
+one application that captures these actions and preserves the evidence behind each profile.
+
+00:00:34.000 --> 00:00:39.633
+The playground contains a mobile event application. Visitors can explore events, place demo
+
+00:00:39.633 --> 00:00:45.267
+ticket and merchandise orders, book a consultation, save event briefs, request proposals and
+
+00:00:45.267 --> 00:00:50.900
+simulate ticket entry.
+
+00:00:50.900 --> 00:00:56.633
+Each action reaches the Flask API. Validation and identity checks precede a transactional
+
+00:00:56.633 --> 00:01:02.367
+SQLite write. An outbox publisher sends records to Kafka topics. The consumer commits
+
+00:01:02.367 --> 00:01:08.100
+offsets after storing the processed result.
+
+00:01:08.100 --> 00:01:13.833
+Bronze stores raw event payloads. Silver records the effective contribution of each action.
+
+00:01:13.833 --> 00:01:19.567
+Gold holds the visitor profile. Event identities support duplicate handling, while capture order
+
+00:01:19.567 --> 00:01:25.300
+supports consistent reconstruction.
+
+00:01:25.300 --> 00:01:31.100
+Insights aggregate preferences and commercial activity. Meeting bookings and proposal requests guide follow-up.
+
+00:01:31.100 --> 00:01:36.900
+Ticket orders, merchandise sales and check-ins reconcile in organizer reports. Synthetic activity is
+
+00:01:36.900 --> 00:01:42.700
+labeled and filterable.
+
+00:01:42.700 --> 00:01:48.850
+Seventeen pipeline tests passed. API checks reconciled three hundred and thirty Canadian dollars
+
+00:01:48.850 --> 00:01:55.000
+in demo purchases. Browser checks traced a ticket purchase and entry into reports.
+
+00:01:55.000 --> 00:02:01.150
+GitHub Actions also passed a real Kafka smoke test, covering broker acknowledgment, consumer
+
+00:02:01.150 --> 00:02:07.300
+materialization and duplicate retries. Public backend hosting remains pending.
+
+00:02:07.300 --> 00:02:13.700
+The source is published on GitHub under Project Behavior Lab. The repository includes
+
+00:02:13.700 --> 00:02:20.100
+Docker configuration, a real broker smoke test and GitHub Actions. This project demonstrates
+
+00:02:20.100 --> 00:02:26.500
+event modeling, delivery reliability, database processing and explainable business insights.
