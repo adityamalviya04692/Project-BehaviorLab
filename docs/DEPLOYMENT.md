@@ -8,7 +8,7 @@ Use `behavior-lab` as the repository root, not its parent resume folder. Add onl
 
 If creating a new repository through the GitHub UI, upload/extract the source files at the repository root, including `.github`, `.devcontainer`, the Dockerfiles and Compose files. If using Git locally, add your repository URL as `origin` and push the main branch.
 
-No remote has been created or pushed as part of preparing this project.
+The project is published at https://github.com/adityamalviya04692/Project-BehaviorLab.
 
 ## 2. Validate in GitHub Actions
 
@@ -19,7 +19,7 @@ No remote has been created or pushed as part of preparing this project.
 3. Runs `tests/kafka_smoke.py`, which submits a real HTTP event twice and verifies one capture, a broker acknowledgment, a Kafka-origin silver record, a gold profile, and reset.
 4. Prints container logs and removes test containers/volumes.
 
-The CI workflow is included but cannot be called “passed” until it actually runs in your repository.
+The CI workflow passed on 5 November 2026, including the real Kafka smoke test. See run 41978919827 in the repository Actions history.
 
 ## 3. Try the full stack in Codespaces
 
@@ -90,7 +90,7 @@ It uses `GITHUB_TOKEN` with package write permission. No registry password belon
 
 ## Verified scope
 
-Local Python/Gunicorn operation and browser workflows have been tested. This machine has no Docker runtime, so Compose startup, the actual broker, GHCR publication, Codespaces and public HTTPS deployment remain unverified here. The included CI smoke test makes broker validation a prerequisite of publishing the image.
+Local Python/Gunicorn and browser workflows passed. GitHub Actions also built and started the Compose stack, then verified the actual Kafka broker and consumer. GHCR publication, Codespaces and public HTTPS backend deployment remain pending.
 
 ## References
 

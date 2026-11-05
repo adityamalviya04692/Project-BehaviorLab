@@ -89,7 +89,7 @@ This folder is ready to become the repository root. It includes:
 - A Codespaces/devcontainer configuration with Docker support.
 - Docker Compose configurations for local mode, Kafka mode and an HTTPS reverse proxy.
 
-GitHub Pages cannot run this Python/Kafka backend. Use Codespaces to run the complete stack from GitHub, or deploy the repository on a persistent Docker host. See the exact commands in [DEPLOYMENT.md](docs/DEPLOYMENT.md). No remote repository, public endpoint or paid infrastructure has been created by this change.
+GitHub Pages cannot run this Python/Kafka backend. Use Codespaces to run the complete stack from GitHub, or deploy the repository on a persistent Docker host. See the exact commands in [DEPLOYMENT.md](docs/DEPLOYMENT.md). Source and case-study media are published in this repository. Public application backend hosting remains pending.
 
 ## Validation
 
