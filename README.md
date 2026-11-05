@@ -1,5 +1,7 @@
 # Behavior Lab
 
+**Live demo:** https://behavior-lab-tum9.onrender.com — runs on Render's free plan in local-processor mode (no Kafka broker). The first request after idle can take about 50 seconds while the instance wakes, and demo data resets on restart. Run it locally (below) for the full Kafka stack.
+
 An interactive behavioral data application. Watch an animated crowd move through a mobile app, try it yourself, inspect every pipeline layer, and explore audience interests and hypothetical sales opportunities.
 
 
@@ -89,7 +91,7 @@ This folder is ready to become the repository root. It includes:
 - A Codespaces/devcontainer configuration with Docker support.
 - Docker Compose configurations for local mode, Kafka mode and an HTTPS reverse proxy.
 
-GitHub Pages cannot run this Python/Kafka backend. Use Codespaces to run the complete stack from GitHub, or deploy the repository on a persistent Docker host. See the exact commands in [DEPLOYMENT.md](docs/DEPLOYMENT.md). Source and case-study media are published in this repository. Public application backend hosting remains pending.
+GitHub Pages cannot run this Python/Kafka backend. Use Codespaces to run the complete stack from GitHub, or deploy the repository on a persistent Docker host. See the exact commands in [DEPLOYMENT.md](docs/DEPLOYMENT.md). Source and case-study media are published in this repository. The public demo is deployed on Render from `render.yaml` at https://behavior-lab-tum9.onrender.com (local-processor mode, free plan).
 
 ## Validation
 
@@ -130,4 +132,4 @@ The event edition uses a separate database so records from the earlier story dem
 
 The repository includes an eight-slide editable presentation, a narrated MP4 walkthrough, captions and a PDF case study under `launch/output`.
 
-The full Kafka CI workflow passed on 5 November 2026. See [the verified run](https://github.com/adityamalviya04692/Project-BehaviorLab/actions/runs/41978919827). Public backend hosting remains pending.
+The full Kafka CI workflow passed on 5 November 2026. See [the verified run](https://github.com/adityamalviya04692/Project-BehaviorLab/actions/runs/41978919827). The public demo is live at https://behavior-lab-tum9.onrender.com.

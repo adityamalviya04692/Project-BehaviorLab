@@ -90,7 +90,7 @@ It uses `GITHUB_TOKEN` with package write permission. No registry password belon
 
 ## Verified scope
 
-Local Python/Gunicorn and browser workflows passed. GitHub Actions also built and started the Compose stack, then verified the actual Kafka broker and consumer. GHCR publication, Codespaces and public HTTPS backend deployment remain pending.
+Local Python/Gunicorn and browser workflows passed. GitHub Actions also built and started the Compose stack, then verified the actual Kafka broker and consumer. The public HTTPS demo runs on Render from `render.yaml` at https://behavior-lab-tum9.onrender.com (local-processor mode, free plan: sleeps when idle, data resets on restart). GHCR publication and Codespaces remain unverified.
 
 ## References
 
