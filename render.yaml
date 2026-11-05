@@ -1,0 +1,18 @@
+# Render Blueprint: free public demo (local processor mode, no Kafka broker).
+# The free plan sleeps when idle and has no persistent disk, so demo data resets on restart.
+services:
+  - type: web
+    name: behavior-lab
+    runtime: docker
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: "8791"
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: PIPELINE_MODE
+        value: local
