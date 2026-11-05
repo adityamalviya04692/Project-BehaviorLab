@@ -22,3 +22,11 @@ $('#architecture-content').onclick=e=>{const row=e.target.closest('[data-event]'
 $('#seed').onclick=async()=>{try{await loadSample($('#seed'));await refresh()}catch{}};
 async function runtime(){health=await setupShell();$('#transport-label').textContent=health.mode==='kafka'?'Apache Kafka':health.mode==='local'?'Local processor':'Unavailable';$('#transport-detail').textContent=health.mode==='local'?'Real database · Kafka bypassed':health.ready?'Publisher and consumer are active':'Waiting for pipeline workers';}
 await runtime();await refresh();setInterval(()=>{if(!document.hidden)refresh()},2000);setInterval(()=>{if(!document.hidden)runtime()},8000);
+
+document.querySelectorAll('[data-map-step]').forEach(node=>{
+ node.addEventListener('click',()=>{
+  const step=document.querySelector(`[data-step="${node.dataset.mapStep}"]`);
+  step.click();
+  step.focus();
+ });
+});
